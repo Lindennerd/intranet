@@ -6,15 +6,15 @@ var router = express.Router();
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
-  res.render('login');
+  res.render('login', {title: "Login"});
 });
 
-router.post('/', function(req, res, next){
-  security.logon(req.body.user, req.body.password)
+router.post('/', function(req, res, next) {
+  security.logon(req.body.useremail, req.body.password)
     .then(function(id){
       if(id) {
         const token = auth.authenticate(id);
-        res.json({auth: true, token: token});
+        res.json({auth: true, token: token, redirect: '/'});
       }
     })
     .catch(function() {
