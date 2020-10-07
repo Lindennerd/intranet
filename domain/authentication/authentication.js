@@ -1,28 +1,28 @@
-const jwt = require('jsonwebtoken');
+const userRepository = require('../../repository/users');
 
 function authenticate() {
-    function authenticate(id) {
-        var token = jwt.sign({id}, process.env.SECRET, {
-            expiresIn: 6000
-        });
-
-        return token;
-    }
 
     function authorize(req, res, next) {
-        const token = req.headers['x-access-token'];
-        if (!token) return res.status(401).json({ auth: false, message: 'No token provided.' });
-    
-        jwt.verify(token, process.env.SECRET, function(err, decoded) {
-            if (err) return res.status(500).json({ auth: false, message: 'Failed to authenticate token.' });
-            
-            req.userId = decoded.id;
-            next();
-        });
+        if(req.session && req.session.user) {
+            userRepository.getUserByEmail(req.session.user)
+                .then(function(user) {
+                    if(!user) res.redirect('/security');
+
+                    delete user.password;
+                    req.session.user = user.email;
+                    res.locals.user = user;
+
+                    next();
+                })
+                .catch(function(error) {
+                    res.redirect('/security');
+                })
+        } else {
+            res.redirect('/security');
+        }
     }
 
     return {
-        authenticate: authenticate,
         authorize: authorize
     }
 }

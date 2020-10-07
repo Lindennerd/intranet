@@ -13,17 +13,21 @@ router.post('/', function(req, res, next) {
   security.logon(req.body.useremail, req.body.password)
     .then(function(id){
       if(id) {
-        const token = auth.authenticate(id);
-        res.json({auth: true, token: token, redirect: '/'});
+        req.session.user = id;
+        res.redirect("/");
       }
     })
     .catch(function() {
-      res.status(401).json('Invalid Login information');
+      res.render('login', {
+        title: "Login", 
+        error: "Verifique as informações de login", 
+        layout: 'login-layout'});
     });
 })
 
-router.post('/logout', function(req, res, next) {
-  res.json({auth: false, token: null});
+router.get('/logout', function(req, res, next) {
+  req.session.reset();
+  res.redirect('/security');
 })
 
 module.exports = router;

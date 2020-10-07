@@ -2,14 +2,14 @@ const usersRepository = require('../../repository/users');
 const md5 = require('md5');
 
 function security() {
-    function logon(username, password) {
+    function logon(email, password) {
         return new Promise(function(resolve, reject){
-            usersRepository.getByUserName(username)
+            usersRepository.getUserByEmail(email)
                 .then(function(user) {
                     if(!user) reject();
 
                     if(user.password === md5(password)) {
-                        resolve(user.username);
+                        resolve(user.email);
                     } else {
                         reject();
                     }

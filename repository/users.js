@@ -5,13 +5,13 @@ function UsersRepository() {
 
     const adapter = new FileAsync(process.env.DATABASE_FILE);
 
-    function getByUserName(username) {
-        const lowerUserName = username.toLowerCase();
+    function getUserByEmail(email) {
+        const lowerEmail = email.toLowerCase();
 
         return low(adapter)
             .then(function(db) {
                 const user = db.get('users')
-                    .find({username: lowerUserName})
+                    .find({email: lowerEmail})
                     .value();
 
                 return user;
@@ -19,7 +19,7 @@ function UsersRepository() {
     }
 
     return {
-        getByUserName: getByUserName
+        getUserByEmail: getUserByEmail
     }
 }
 
