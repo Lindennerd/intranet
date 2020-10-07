@@ -1,12 +1,12 @@
 <div class="row">
     <div class="col s6">
-        <form action="/profile/profile-image-update" method="POST" class="card">
+        <form action="/profile/profile-image-update" method="POST" class="card" encType="multipart/form-data">
             <div class="card-content">
                 <div class="card-title">Atualizar imagem de perfil</div>
                 <div class="file-field input-field">
                     <div class="btn">
                         <span>Procurar</span>
-                        <input type="file" name="profile">
+                        <input type="file" name="profile" accept=".jpg,.png,.gif" />
                     </div>
                     <div class="file-path-wrapper">
                         <input class="file-path validate" type="text">
@@ -22,13 +22,13 @@
     </div>
 
     <div class="col s6">
-        <form action="/profile/background-update" method="POST" class="card">
+        <form action="/profile/background-update" method="POST" class="card" encType="multipart/form-data">
             <div class="card-content">
                 <div class="card-title">Atualizar imagem de fundo</div>
                 <div class="file-field input-field">
                     <div class="btn">
                         <span>Procurar</span>
-                        <input type="file" name="background">
+                        <input type="file" name="background" accept=".jpg,.png,.gif">
                     </div>
                     <div class="file-path-wrapper">
                         <input class="file-path validate" type="text">
@@ -44,7 +44,7 @@
     </div>
 
     <div class="col s12">
-        <form action="/profile/update-information" method="POST" class="card">
+        <form action="/profile/update-information" method="POST" class="card" >
             <div class="card-content row">
                 <div class="input-field col s12 m6">
                     <input type="text" name="name" value="{{user.name}}">

@@ -12,7 +12,7 @@ router.get('/delete/:useremail', auth.authorize, auth.isAdmin, async function(re
   const email = req.params.useremail;
   const response = usersDomain.deleteUser(email);
 
-  if(response === 'success') res.redirect('/users');
+  if(response === 'success') res.redirect('/users'); 
   else {
     res.locals.error = 'Erro na deleção de usuários';
     res.redirect('/users');

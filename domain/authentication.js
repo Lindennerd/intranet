@@ -8,7 +8,6 @@ function authenticate() {
                 .then(function(user) {
                     if(!user) res.redirect('/security');
 
-                    delete user.password;
                     req.session.user = user._id;
                     res.locals.user = user;
 

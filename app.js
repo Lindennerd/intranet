@@ -4,6 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var session = require('client-sessions');
+var fileupload = require('express-fileupload');
 
 require('dotenv').config();
 require('./repository/database').connect();
@@ -12,9 +13,10 @@ var indexRouter = require('./routes/index');
 var securityRouter = require('./routes/security');
 var usersRouter = require('./routes/users');
 var profileRouter = require('./routes/profile');
-const { profile } = require('console');
 
 var app = express();
+
+app.use(fileupload());
 
 app.use(session({
   cookieName: 'session', // cookie name dictates the key name added to the request object
