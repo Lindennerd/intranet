@@ -6,9 +6,13 @@ var logger = require('morgan');
 var session = require('client-sessions');
 
 require('dotenv').config();
+require('./repository/database').connect();
 
 var indexRouter = require('./routes/index');
 var securityRouter = require('./routes/security');
+var usersRouter = require('./routes/users');
+var profileRouter = require('./routes/profile');
+const { profile } = require('console');
 
 var app = express();
 
@@ -31,6 +35,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/security', securityRouter);
 app.use('/', indexRouter);
+app.use('/users', usersRouter);
+app.use('/profile', profileRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

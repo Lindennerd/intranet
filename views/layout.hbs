@@ -21,9 +21,9 @@
         <div class="background">
           <img src="{{user.profile.background}}" alt="imagem do usuário">
         </div>
-        <a href=""><img class="circle" src="{{user.profile.profile-image}}"></a>
-        <a href="#name"><span class="white-text name">{{user.name}}</span></a>
-        <a href="#email"><span class="white-text email">{{user.email}}</span></a>
+        <a href="/profile"><img class="circle" src="{{user.profile.profile-image}}"></a>
+        <a href="/profile"><span class="white-text name">{{user.name}}</span></a>
+        <a href="/profile"><span class="white-text email">{{user.email}}</span></a>
       </div>
     </li>
     <li><a href="">Agenda</a></li>
@@ -33,7 +33,9 @@
     <li><a href="">Editor</a></li>
     <li><a href="">Biblioteca</a></li>
     <li><div class="divider"></div></li>
+    {{#if user.isAdmin}}
     <li><a href="/users">Gerenciar Usuários</a></li>
+    {{/if}}
     <li><a href="/security/logout">Sair</a></li>
   </ul>
 

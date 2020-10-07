@@ -1,6 +1,6 @@
 var express = require('express');
-var security = require('../domain/security/security');
-var auth = require('../domain/authentication/authentication');
+var security = require('../domain/security');
+var auth = require('../domain/authentication');
 
 var router = express.Router();
 
