@@ -1,0 +1,83 @@
+<div class="row">
+    <div class="col s12">
+        <ul class="collapsible">
+            <li>
+                <div class="collapsible-header"><i class="material-icons">insert_invitation</i>Novo Evento</div>
+                <div class="collapsible-body" style="background-color: #fff;">
+                    <form action="/schedule/new-event" method="POST">
+                        <div class="row">
+                            <div class="input-field col s12 m12">
+                                <input type="text" name="name" required>
+                                <label for="name">Nome</label>                                
+                            </div>
+                            <div class="input-field col s12 m6">
+                                <input type="text" name="date" required class="datepicker">
+                                <label for="date">Quando?</label>                                
+                            </div>
+                            <div class="input-field col s12 m6">
+                                <input type="text" name="hours" required class="timepicker">
+                                <label for="hours">Que horas?</label>                                
+                            </div>
+                            <div class="input-field col s12 m6">
+                                    <select name="attendees">
+                                        <option value="" disabled selected>Escolha um participante</option>
+                                    </select>
+                                <label for="attendees">Quem?</label>                                
+                            </div>                             
+                            <div class="input-field col s12 m6">
+                                    <select name="duration" required>
+                                        <option value="" disabled selected>Escolha uma duração</option>
+                                        <option value="15 minutos">15 minutos</option>
+                                        <option value="30 minutos">30 minutos</option>
+                                        <option value="1 hora">1 hora</option>
+                                        <option value="Mais de 1 hora">Mais de 1 hora</option>
+                                        <option value="O dia inteiro">O dia inteiro</option>
+                                    </select>
+                                <label for="duration">Quanto tempo?</label>                                
+                            </div>                                                        
+                            <div class="input-field col s12 m12">
+                                <input type="text" name="description" required>
+                                <label for="description">Descrição</label>                                
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var diaSemana = [ 'Domingo', 'Segunda-Feira', 'Terca-Feira', 'Quarta-Feira', 'Quinta-Feira', 'Sexta-Feira', 'Sabado' ];
+        var mesAno = [ 'Janeiro', 'Fevereiro', 'Marco', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro'           , 'Dezembro' ];
+        var data = new Date();
+        var hoje = diaSemana[data.getDay()] + ', ' + mesAno[data.getMonth()] + ' de ' + data.getFullYear();
+
+        var options = {
+            months: mesAno,
+            monthsShort: [ 'Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez' ],
+            weekdays: diaSemana,
+            weekdaysShort: [ 'Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab' ],
+            weekdaysAbbrev: [ 'D', 'S', 'T', 'Q', 'Q', 'S', 'S' ],
+            selectMonths: true,
+            selectYears: true,
+            clear: false,
+            format: 'dddd/mm/yyyy',
+            today: "Hoje",
+            close: "X",
+            min: new Date(data.getFullYear() - 1, 0, 1),
+            max: new Date(data.getFullYear() + 1, 11, 31),
+        }
+        var elems = document.querySelectorAll('.datepicker');
+        var instances = M.Datepicker.init(elems, options);
+    });
+
+
+    $(document).ready(function () {
+
+        $('.collapsible').collapsible();
+        $('.timepicker').timepicker();
+        $('select').formSelect();
+    });
+</script>
