@@ -1,10 +1,10 @@
-const usersRepository = require('../repository/user.repository');
+const usersRepository = require('../repository/models/user.model');
 const md5 = require('md5');
 
 function security() {
     function logon(email, password) {
         return new Promise(function (resolve, reject) {
-            usersRepository.query({ email: email }, true)
+            usersRepository.findOne({ email: email }).exec()
                 .then(function (user) {
                     if (!user) reject();
                 

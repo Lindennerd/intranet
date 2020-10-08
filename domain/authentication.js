@@ -1,10 +1,10 @@
-const userRepository = require('../repository/user.repository');
+const userRepository = require('../repository/models/user.model');
 
 function authenticate() {
 
     function authorize(req, res, next) {
         if(req.session && req.session.user) {
-            userRepository.getById(req.session.user)
+            userRepository.findById(req.session.user)
                 .then(function(user) {
                     if(!user) res.redirect('/security');
 
@@ -23,7 +23,7 @@ function authenticate() {
 
     function isAdmin(req, res, next) {
         if(req.session && req.session.user) {
-            userRepository.getById(req.session.user)
+            userRepository.findById(req.session.user)
                 .then(function(user) {
                     if(!user) res.redirect('/security');
                     if(!user.isAdmin) res.redirect('/');

@@ -1,11 +1,11 @@
-const usersRepository = require('../repository/user.repository');
+const usersRepository = require('../repository/models/user.model');
 const md5 = require('md5');
 
 function UsersDomain() {
 
     async function listUsers() {
         return await usersRepository
-            .getAll()
+            .find({})
             .map(function(user) {
                 delete user.password;
                 return user;
@@ -18,19 +18,18 @@ function UsersDomain() {
     }
 
     async function deleteUser(id) {
-        return await usersRepository.delete(id);
+        return await usersRepository.findByIdAndDelete(id);
     }
 
     async function changeAdmin(id) {
-        const user = await usersRepository.getById(id);
+        const user = await usersRepository.findById(id);
         user.isAdmin = !user.isAdmin;
         return user.save();
     }
 
     async function changeProfilePicture(file, id) {
-        //const base64Image = getImageBase64(file);
         const contentType = getImageContentType(file);
-        const user = await usersRepository.getById(id);
+        const user = await usersRepository.findById(id);
 
         user.profile["profile-image"] = {
             data: file.data,
@@ -41,9 +40,8 @@ function UsersDomain() {
     }
 
     async function changeBackgroundPicture(file, id) {
-        //const base64Image = getImageBase64(file);
         const contentType = getImageContentType(file);
-        const user = await usersRepository.getById(id);
+        const user = await usersRepository.findById(id);
 
         user.profile.background = {
             data: file.data,
@@ -54,11 +52,11 @@ function UsersDomain() {
     }
 
     async function getById(id) {
-        return await usersRepository.getById(id);
+        return await usersRepository.findById(id);
     }
 
     async function updateInformation(information, id) {
-        const user = await usersRepository.getById(id);
+        const user = await usersRepository.findById(id);
         user.name = information.name !== "" && user.name !== information.name
             ? information.name : user.name;
 
