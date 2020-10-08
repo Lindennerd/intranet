@@ -5,8 +5,8 @@ function UsersDomain() {
 
     async function listUsers() {
         return await usersRepository
-            .find({})
-            .map(function(user) {
+            .find({}).sort('name')
+            .map(function (user) {
                 delete user.password;
                 return user;
             });
@@ -35,7 +35,7 @@ function UsersDomain() {
             data: file.data,
             contentType: contentType
         };
-        
+
         user.save();
     }
 
@@ -72,18 +72,18 @@ function UsersDomain() {
     function getImageContentType(file) {
         const re = /(?:\.([^.]+))?$/;
         const extension = re.exec(file.name)[1];
-        return `image/${extension}`;    
+        return `image/${extension}`;
     }
 
-    return { 
-        listUsers, 
-        addUser, 
-        deleteUser, 
-        changeAdmin, 
-        getById, 
-        changeBackgroundPicture, 
-        changeProfilePicture, 
-        updateInformation 
+    return {
+        listUsers,
+        addUser,
+        deleteUser,
+        changeAdmin,
+        getById,
+        changeBackgroundPicture,
+        changeProfilePicture,
+        updateInformation
     }
 }
 

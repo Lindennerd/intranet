@@ -8,36 +8,42 @@
                         <div class="row">
                             <div class="input-field col s12 m12">
                                 <input type="text" name="name" required>
-                                <label for="name">Nome</label>                                
+                                <label for="name">Nome</label>
                             </div>
                             <div class="input-field col s12 m6">
                                 <input type="text" name="date" required class="datepicker">
-                                <label for="date">Quando?</label>                                
+                                <label for="date">Quando?</label>
                             </div>
                             <div class="input-field col s12 m6">
                                 <input type="text" name="hours" required class="timepicker">
-                                <label for="hours">Que horas?</label>                                
+                                <label for="hours">Que horas?</label>
                             </div>
                             <div class="input-field col s12 m6">
-                                    <select name="attendees">
-                                        <option value="" disabled selected>Escolha um participante</option>
-                                    </select>
-                                <label for="attendees">Quem?</label>                                
-                            </div>                             
+                                <select name="attendees" multiple>
+                                    <option value="" disabled selected>Escolha um participante</option>
+                                    {{#each users}}
+                                    <option value="{'name': {{name}}, 'id': {{id}} }">{{name}}</option>
+                                    {{/each}}
+                                </select>
+                                <label for="attendees">Quem?</label>
+                            </div>
                             <div class="input-field col s12 m6">
-                                    <select name="duration" required>
-                                        <option value="" disabled selected>Escolha uma duração</option>
-                                        <option value="15 minutos">15 minutos</option>
-                                        <option value="30 minutos">30 minutos</option>
-                                        <option value="1 hora">1 hora</option>
-                                        <option value="Mais de 1 hora">Mais de 1 hora</option>
-                                        <option value="O dia inteiro">O dia inteiro</option>
-                                    </select>
-                                <label for="duration">Quanto tempo?</label>                                
-                            </div>                                                        
+                                <select name="duration" required>
+                                    <option value="" disabled selected>Escolha uma duração</option>
+                                    <option value="15 minutos">15 minutos</option>
+                                    <option value="30 minutos">30 minutos</option>
+                                    <option value="1 hora">1 hora</option>
+                                    <option value="Mais de 1 hora">Mais de 1 hora</option>
+                                    <option value="O dia inteiro">O dia inteiro</option>
+                                </select>
+                                <label for="duration">Quanto tempo?</label>
+                            </div>
                             <div class="input-field col s12 m12">
                                 <input type="text" name="description" required>
-                                <label for="description">Descrição</label>                                
+                                <label for="description">Descrição</label>
+                            </div>
+                            <div class="input-field col s12">
+                                <input type="submit" class="btn" value="Criar Evento">
                             </div>
                         </div>
                     </form>
@@ -48,18 +54,18 @@
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var diaSemana = [ 'Domingo', 'Segunda-Feira', 'Terca-Feira', 'Quarta-Feira', 'Quinta-Feira', 'Sexta-Feira', 'Sabado' ];
-        var mesAno = [ 'Janeiro', 'Fevereiro', 'Marco', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro'           , 'Dezembro' ];
+    $(document).ready(function () {
+        var diaSemana = ['Domingo', 'Segunda-Feira', 'Terca-Feira', 'Quarta-Feira', 'Quinta-Feira', 'Sexta-Feira', 'Sabado'];
+        var mesAno = ['Janeiro', 'Fevereiro', 'Marco', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
         var data = new Date();
         var hoje = diaSemana[data.getDay()] + ', ' + mesAno[data.getMonth()] + ' de ' + data.getFullYear();
 
         var options = {
             months: mesAno,
-            monthsShort: [ 'Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez' ],
+            monthsShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
             weekdays: diaSemana,
-            weekdaysShort: [ 'Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab' ],
-            weekdaysAbbrev: [ 'D', 'S', 'T', 'Q', 'Q', 'S', 'S' ],
+            weekdaysShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+            weekdaysAbbrev: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'],
             selectMonths: true,
             selectYears: true,
             clear: false,
@@ -68,16 +74,14 @@
             close: "X",
             min: new Date(data.getFullYear() - 1, 0, 1),
             max: new Date(data.getFullYear() + 1, 11, 31),
-        }
-        var elems = document.querySelectorAll('.datepicker');
-        var instances = M.Datepicker.init(elems, options);
-    });
+            cancel: 'Cancelar',
+            clear: 'Limpar',
+            done: 'Ok'
+        };
 
-
-    $(document).ready(function () {
-
+        $('.datepicker').datepicker({ i18n: options, format: 'dd/mm/yyyy' });
         $('.collapsible').collapsible();
-        $('.timepicker').timepicker();
+        $('.timepicker').timepicker({ i18n: options, twelveHour: false });
         $('select').formSelect();
     });
 </script>

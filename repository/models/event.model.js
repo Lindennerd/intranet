@@ -9,8 +9,9 @@ const eventSchema = new mongoose.Schema({
     }],
     date: Date,
     duration: String,
-    createdAt: {type: Date, default: new Date()},
-    canceled: {type: Boolean, default: false}
-}, {collection: 'event'});
+    createdAt: { type: Date, default: new Date() },
+    canceled: { type: Boolean, default: false },
+    createdBy: mongoose.SchemaTypes.ObjectId
+}, { collection: 'event' });
 
-module.exports =  mongoose.model('event', eventSchema);
+module.exports = mongoose.model('event', eventSchema);
