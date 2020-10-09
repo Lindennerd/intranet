@@ -3,17 +3,17 @@ const userRepository = require('../repository/models/user.model');
 function authenticate() {
 
     function authorize(req, res, next) {
-        if(req.session && req.session.user) {
+        if (req.session && req.session.user) {
             userRepository.findById(req.session.user)
-                .then(function(user) {
-                    if(!user) res.redirect('/security');
+                .then(function (user) {
+                    if (!user) res.redirect('/security');
 
                     req.session.user = user._id;
-                    res.locals.user = user;
+                    res.locals.user = user.toObject();
 
                     next();
                 })
-                .catch(function(error) {
+                .catch(function (error) {
                     res.redirect('/security');
                 })
         } else {
@@ -22,14 +22,14 @@ function authenticate() {
     }
 
     function isAdmin(req, res, next) {
-        if(req.session && req.session.user) {
+        if (req.session && req.session.user) {
             userRepository.findById(req.session.user)
-                .then(function(user) {
-                    if(!user) res.redirect('/security');
-                    if(!user.isAdmin) res.redirect('/');
+                .then(function (user) {
+                    if (!user) res.redirect('/security');
+                    if (!user.isAdmin) res.redirect('/');
                     else next();
                 })
-                .catch(function(error) {
+                .catch(function (error) {
                     res.redirect('/security');
                 })
         } else {

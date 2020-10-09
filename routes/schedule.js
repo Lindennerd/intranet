@@ -8,7 +8,8 @@ const router = express.Router();
 router.get('/', auth.authorize, async function (req, res, next) {
     try {
         const users = await usersDomain.listUsers();
-        res.render('schedule', { title: 'Agenda', users: users });
+        const events = await eventDomain.listEventsForLoggedUser(req.session.user);
+        res.render('schedule', { title: 'Agenda', users: users, events: events });
     } catch (error) {
         res.locals.error = error;
         res.redirect('/');

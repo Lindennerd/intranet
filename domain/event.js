@@ -1,6 +1,7 @@
 const eventRepository = require('../repository/models/event.model');
 const mongoose = require('mongoose');
 const moment = require('moment');
+const eventModel = require('../repository/models/event.model');
 
 function EventDomain() {
     async function createEvent(event, creator) {
@@ -24,7 +25,18 @@ function EventDomain() {
         return await eventRepository.create(eventModel);
     }
 
-    return { createEvent }
+    async function listEventsForLoggedUser(user) {
+        const userId = mongoose.Types.ObjectId(user);
+        const events = await eventModel
+            .find({ $or: [{ createdby: userId }, { 'attendees.id': userId }] })
+            .sort({ date: -1 })
+            .lean()
+            .exec();
+
+        return events;
+    }
+
+    return { createEvent, listEventsForLoggedUser }
 }
 
 module.exports = EventDomain();
