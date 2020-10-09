@@ -6,15 +6,23 @@ const eventDomain = require('../domain/event');
 const router = express.Router();
 
 router.get('/', auth.authorize, async function (req, res, next) {
-    const users = await usersDomain.listUsers();
-    res.render('schedule', { title: 'Agenda', users: users });
+    try {
+        const users = await usersDomain.listUsers();
+        res.render('schedule', { title: 'Agenda', users: users });
+    } catch (error) {
+        res.locals.error = error;
+        res.redirect('/');
+    }
 });
 
 router.post('/new-event', auth.authorize, async function (req, res, next) {
-    const event = req.body;
-    eventDomain.createEvent(event, req.session.user);
-
-    res.redirect('/schedule');
+    try {
+        eventDomain.createEvent(event, req.session.user);
+        res.redirect('/schedule');
+    } catch (error) {
+        res.locals.error = error;
+        res.redirect('/schedule');
+    }
 });
 
 module.exports = router;

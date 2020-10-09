@@ -21,7 +21,7 @@
                             <div class="input-field col s12 m6">
                                 <select name="attendees" multiple>
                                     {{#each users}}
-                                    <option value="{\" name\": \"{{name}}\", \"id\": \"{{id}}\" }">{{name}}</option>
+                                    <option value='{"name": "{{name}}", "id": "{{id}}" }'>{{name}}</option>
                                     {{/each}}
                                 </select>
                                 <label for="attendees">Quem?</label>

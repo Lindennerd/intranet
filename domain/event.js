@@ -4,7 +4,7 @@ const moment = require('moment');
 
 function EventDomain() {
     async function createEvent(event, creator) {
-        console.log(event);
+        const date = moment.parseZone(event.date + ' ' + event.hours, 'DD/MM/yyyy HH:mm', 'pt-BR').valueOf();
 
         const eventModel = {
             name: event.name,
@@ -18,7 +18,7 @@ function EventDomain() {
             }),
             duration: event.duration,
             createdby: mongoose.Types.ObjectId(creator),
-            date: moment.parseZone(event.date + ' ' + event.hours, 'DD/MM/yyyy HH:mm', 'pt-BR').valueOf()
+            date: new Date(date).toUTCString()
         };
 
         return await eventRepository.create(eventModel);
