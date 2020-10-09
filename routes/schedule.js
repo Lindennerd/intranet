@@ -13,6 +13,8 @@ router.get('/', auth.authorize, async function (req, res, next) {
 router.post('/new-event', auth.authorize, async function (req, res, next) {
     const event = req.body;
     eventDomain.createEvent(event, req.session.user);
+
+    res.redirect('/schedule');
 });
 
 module.exports = router;
