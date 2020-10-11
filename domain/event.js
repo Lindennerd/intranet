@@ -4,6 +4,7 @@ const moment = require('moment');
 const eventModel = require('../repository/models/event.model');
 
 function EventDomain() {
+
     async function createEvent(event, creator) {
         const date = moment.parseZone(event.date + ' ' + event.hours, 'DD/MM/yyyy HH:mm', 'pt-BR').valueOf();
 
@@ -18,7 +19,7 @@ function EventDomain() {
                 };
             }),
             duration: event.duration,
-            createdby: mongoose.Types.ObjectId(creator),
+            createdBy: mongoose.Types.ObjectId(creator.toString()),
             date: new Date(date).toUTCString()
         };
 
@@ -28,15 +29,39 @@ function EventDomain() {
     async function listEventsForLoggedUser(user) {
         const userId = mongoose.Types.ObjectId(user);
         const events = await eventModel
-            .find({ $or: [{ createdby: userId }, { 'attendees.id': userId }] })
+            .find({ $or: [{ createdby: userId }, { 'attendees.id': userId }], $and: [{ canceled: false }] })
             .sort({ date: -1 })
-            .lean()
             .exec();
 
-        return events;
+        return events.map(function (event) {
+            return event.toObject();
+        });
     }
 
-    return { createEvent, listEventsForLoggedUser }
+    async function getEvent(eventId) {
+        return await eventRepository.findById(eventId).exec();
+    }
+
+    async function cancelEvent(eventId, user) {
+        const event = await eventRepository.findById(eventId).exec();
+        if (event.createdBy.toString() === user.toString()) {
+            event.canceled = true;
+            event.save();
+        }
+    }
+
+    async function addComment(newComment, user) {
+        const event = await eventRepository.findById(newComment.eventId).exec();
+        if (!event.comments) event.comments = [];
+        event.comments.push({
+            comment: newComment.newComment,
+            commentBy: mongoose.Types.ObjectId(user.toString())
+        });
+
+        return await event.save();
+    }
+
+    return { createEvent, listEventsForLoggedUser, getEvent, cancelEvent, addComment }
 }
 
 module.exports = EventDomain();

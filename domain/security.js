@@ -4,7 +4,7 @@ const md5 = require('md5');
 function security() {
     function logon(email, password) {
         return new Promise(function (resolve, reject) {
-            usersRepository.findOne({ email: email }).lean().exec()
+            usersRepository.findOne({ email: email }).exec()
                 .then(function (user) {
                     if (!user) reject();
 

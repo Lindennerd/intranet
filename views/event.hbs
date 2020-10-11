@@ -1,0 +1,40 @@
+<div class="row">
+    <div class="col s12">
+        <div class="card">
+            <div class="card-content row">
+                <div class="col s12">
+                    <p class="flow-text text-center">{{event.description}}</p>
+                    <div class="divider"></div>
+                </div>
+                <div class="col s6 m4">
+                    <div class="card-title">Quando?</div>
+                    {{event.formattedDate}}
+                </div>
+                <div class="col s6 m4">
+                    <div class="card-title">Quanto tempo?</div>
+                    {{event.duration}}
+                </div>
+                <div class="col s6 m4">
+                    <div class="card-title">Quem?</div>
+                    {{event.attendeesNames}}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col s12">
+        <form action="" class="card" id="new-comment-on-event">
+            <div class="card-content row">
+                <div class="input-field col s10">
+                    <i class="material-icons prefix">mode_edit</i>
+                    <textarea id="new-comment-text" class="materialize-textarea"></textarea>
+                    <label for="new-comment-text">Novo Comentário</label>
+                </div>
+                <div class="input-field col s1">
+                    <input type="submit" class="btn" value="enviar">
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="/javascripts/event/event.js"></script>

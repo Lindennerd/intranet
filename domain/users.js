@@ -7,7 +7,6 @@ function UsersDomain() {
         return await usersRepository
             .find({})
             .sort('name')
-            .lean()
             .map(function (user) {
                 delete user.password;
                 return user;
@@ -43,7 +42,7 @@ function UsersDomain() {
 
     async function changeBackgroundPicture(file, id) {
         const contentType = getImageContentType(file);
-        const user = await usersRepository.findById(id).lean();
+        const user = await usersRepository.findById(id);
 
         user.profile.background = {
             data: file.data,
@@ -54,11 +53,11 @@ function UsersDomain() {
     }
 
     async function getById(id) {
-        return await usersRepository.findById(id).lean();
+        return await usersRepository.findById(id);
     }
 
     async function updateInformation(information, id) {
-        const user = await usersRepository.findById(id).lean();
+        const user = await usersRepository.findById(id);
         user.name = information.name !== "" && user.name !== information.name
             ? information.name : user.name;
 

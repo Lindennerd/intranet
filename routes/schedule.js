@@ -9,16 +9,24 @@ router.get('/', auth.authorize, async function (req, res, next) {
     try {
         const users = await usersDomain.listUsers();
         const events = await eventDomain.listEventsForLoggedUser(req.session.user);
-        res.render('schedule', { title: 'Agenda', users: users, events: events });
+        res.render('schedule', {
+            title: 'Agenda',
+            users: users,
+            events: events.map(function (event) {
+                event.canCancel = event.createdBy.toString() === req.session.user.toString();
+                return event;
+            })
+        });
     } catch (error) {
         res.locals.error = error;
-        res.redirect('/');
+        console.error(error);
+        res.redirect('/schedule');
     }
 });
 
 router.post('/new-event', auth.authorize, async function (req, res, next) {
     try {
-        eventDomain.createEvent(event, req.session.user);
+        eventDomain.createEvent(req.body, req.session.user);
         res.redirect('/schedule');
     } catch (error) {
         res.locals.error = error;
